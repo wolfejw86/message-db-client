@@ -34,6 +34,3 @@ jobs:
 
       - name: Test
         run: npm run test --ci --colors --coverage --runInBand
-
-      - name: Build
-        run: npm run build
