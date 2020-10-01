@@ -1,0 +1,38 @@
+{
+  "name": "example-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tap test/**/*.test.js",
+    "start": "fastify start -l info app.js",
+    "dev": "fastify start -w -l info -P app.js"
+  },
+  "keywords": [],
+  "author": "John Wolfe",
+  "license": "ISC",
+  "dependencies": {
+    "argon2": "^0.27.0",
+    "db-migrate": "^0.11.11",
+    "db-migrate-pg": "^1.2.2",
+    "dotenv": "^8.2.0",
+    "fastify": "^3.0.0",
+    "fastify-autoload": "^3.0.2",
+    "fastify-cli": "^2.3.0",
+    "fastify-cookie": "^4.1.0",
+    "fastify-formbody": "^5.0.0",
+    "fastify-plugin": "^2.3.4",
+    "fastify-routes": "^3.0.1",
+    "fastify-session": "^5.2.0",
+    "handlebars": "^4.7.6",
+    "pg-promise": "^10.6.1",
+    "point-of-view": "^4.6.0",
+    "uuid": "^8.3.0"
+  },
+  "devDependencies": {
+    "tap": "^14.0.0"
+  }
+}

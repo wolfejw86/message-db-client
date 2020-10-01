@@ -1,0 +1,6 @@
+{
+  "dev": {
+    "ENV": "APP_PG_URI"
+  },
+  "sql-file": true
+}
