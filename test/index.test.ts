@@ -5,6 +5,11 @@ test('it should connect client, write to stream, and read from stream', async ()
   const mdbClient = new MessageDbClient({
     dbUri: 'postgres://postgres@localhost:5433/message_store',
   });
+
+  await new Promise(resolve => {
+    mdbClient.once('connected', resolve);
+  });
+
   const viewedEvent = {
     id: uuid(),
     type: 'TestInitialized',

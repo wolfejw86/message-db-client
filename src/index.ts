@@ -195,6 +195,7 @@ export class MessageDbClient {
   };
 
   private db: pg.Client;
+  private events = new EventEmitter();
   private eventSubscriptions: EventStreamSubscription<MessageHandler>[] = [];
 
   constructor(config: IMessageDbClientConfig) {
@@ -205,7 +206,11 @@ export class MessageDbClient {
     this.db
       .connect()
       .then(() => this.db.query('SET search_path = message_store, public'))
-      .then(() => console.log('Initialized message store'));
+      .then(() => this.events.emit('connected'));
+  }
+
+  public once(event: string, cb: (...args: any[]) => void) {
+    this.events.once(event, cb);
   }
 
   public writeToStream(
