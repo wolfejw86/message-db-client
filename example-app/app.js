@@ -15,7 +15,7 @@ module.exports = async function(fastify, opts) {
   // Place here your custom code!
   fastify.register(pov, {
     engine: { handlebars: require('handlebars') },
-    root: require('path').join(__dirname, 'templates'),
+    layout: './views/layouts/main.hbs',
   });
   fastify.register(require('fastify-formbody'));
   fastify.register(require('fastify-routes'));
@@ -43,6 +43,11 @@ module.exports = async function(fastify, opts) {
 
   await fastify.register(AutoLoad, {
     dir: path.join(__dirname, 'components'),
+    options: Object.assign({}, opts),
+  });
+
+  await fastify.register(AutoLoad, {
+    dir: path.join(__dirname, 'denormalizers'),
     options: Object.assign({}, opts),
   });
 

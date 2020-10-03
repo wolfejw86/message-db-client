@@ -8,6 +8,8 @@ services:
     ports:
       - '0.0.0.0:5432:5432'
   message-db:
-    image: ethangarofolo/message-db:1.1.6
+    image: wolfejw86/pg-message-db:latest
+    environment: 
+      - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - '0.0.0.0:5433:5432'
