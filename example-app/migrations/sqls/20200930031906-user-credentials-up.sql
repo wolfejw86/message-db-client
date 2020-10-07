@@ -2,6 +2,7 @@ create table user_credentials
 (
   id text primary key not null,
   email text not null,
+  nickname text not null,
   password_hash text not null
 );
 

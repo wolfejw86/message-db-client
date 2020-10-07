@@ -1,8 +1,12 @@
 <form action="/register" method="POST">
   <input type="hidden" name="userId" value="{{userId}}" />
   <div>
+    <label for="nickname">Nickname</label>
+    <input pattern="[a-zA-Z0-9]+" type="text" name="nickname" />
+  </div>
+  <div>
     <label for="email">Email</label>
-    <input type="text" name="email" />
+    <input type="email" name="email" />
   </div>
   <div>
     <label for="password">Password</label>

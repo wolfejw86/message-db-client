@@ -9,7 +9,7 @@
   "scripts": {
     "test": "tap test/**/*.test.js",
     "start": "fastify start -l info app.js",
-    "dev": "fastify start -w -l info -P app.js"
+    "dev": "fastify start -w -d -I 9229 -l info -P app.js"
   },
   "keywords": [],
   "author": "John Wolfe",
@@ -29,6 +29,7 @@
     "fastify-routes": "^3.0.1",
     "fastify-session": "^5.2.0",
     "handlebars": "^4.7.6",
+    "nanoid": "^3.1.12",
     "pg-promise": "^10.6.1",
     "point-of-view": "^4.6.0",
     "uuid": "^8.3.0"

@@ -11,7 +11,7 @@ const pov = require('point-of-view');
  * @param {fastify.FastifyInstance} fastify
  * @param {*} opts
  */
-module.exports = async function(fastify, opts) {
+module.exports = async function (fastify, opts) {
   // Place here your custom code!
   fastify.register(pov, {
     engine: { handlebars: require('handlebars') },
@@ -22,6 +22,9 @@ module.exports = async function(fastify, opts) {
   fastify.register(require('fastify-cookie'));
   fastify.register(fastifySession, {
     secret: process.env.COOKIE_SECRETS.split(','),
+    cookie: {
+      secure: false,
+    }
   });
 
   // Do not touch the following lines

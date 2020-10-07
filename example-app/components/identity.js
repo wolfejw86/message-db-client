@@ -6,7 +6,10 @@ const { MessageDbClient, formatStreamMessage } = require('../../dist');
  */
 module.exports = fp(
   async function(fastify) {
-    console.log('am i even getting here');
+
+    /**
+     * Projection that builds a user entity based on 1000 events or less
+     */
     const userIdentityProjection = {
       $init() {
         return {
@@ -19,6 +22,7 @@ module.exports = fp(
       Registered(identity, registered) {
         identity.id = registered.data.userId;
         identity.email = registered.data.email;
+        identity.nickname = registered.data.nickname;
         identity.isRegistered = true;
 
         return identity;

@@ -328,6 +328,20 @@ export class MessageDbClient {
     return this.db.end();
   }
 
+  public formatStreamMessage<TType, TData, TMeta>(
+    type: TType,
+    data: TData,
+    metadata?: TMeta,
+    id = uuid.v4()
+  ): IStreamMessage<TType, TData, TMeta> {
+    return {
+      id,
+      type,
+      data,
+      metadata,
+    };
+  }
+
   private static deserializeMessage(rawMessage: any) {
     if (!rawMessage) {
       return null;

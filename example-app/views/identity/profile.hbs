@@ -1,1 +1,34 @@
-Welcome {{email}}!
+<div>
+  <h3>
+    Hi {{nickname}}!
+  </h3>
+
+  <h3>
+    User Information:
+  </h3>
+  <p>
+    Id: {{id}}
+  </p>
+  <p>
+    Email: {{email}}
+  </p>
+  <p>
+    Nickname: {{nickname}}
+  </p>
+</div>
+
+<div>
+  <h2>Urls</h2>
+
+  <div>
+    <h3>Create New Url</h3>
+    <form action="/url" method="POST">
+      <input type="hidden" name="urlId" value="{{urlId}}">
+      <div>
+        <label for="url">Url</label>
+        <input type="url" name="url" />
+      </div>
+      <button>Login</button>
+    </form>
+  </div>
+</div>

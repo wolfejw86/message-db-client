@@ -5,20 +5,20 @@ const { MessageDbClient } = require('../../dist');
  * @param {import("fastify").FastifyInstance & {messageStore: MessageDbClient}} fastify
  */
 module.exports = fp(
-  async function(fastify) {
+  async function (fastify) {
     const userCredentialsDenormalizerSub = fastify.messageStore.createSubscriber(
       {
         handlers: {
           Registered: async event => {
             await fastify.appDb.query(
               `
-        INSERT INTO user_credentials
-          (id, email, password_hash)
-            VALUES
-          ($1, $2, $3)
-        ON CONFLICT DO NOTHING
-        `,
-              [event.data.userId, event.data.email, event.data.passwordHash]
+            INSERT INTO user_credentials
+              (id, email, password_hash, nickname)
+                VALUES
+              ($1, $2, $3, $4)
+            ON CONFLICT DO NOTHING
+            `,
+              [event.data.userId, event.data.email, event.data.passwordHash, event.data.nickname]
             );
           },
         },

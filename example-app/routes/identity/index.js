@@ -1,12 +1,13 @@
 const uuid = require('uuid').v4;
 const camelcase = require('camelcase-keys');
 const argon2 = require('argon2');
+const { nanoid } = require('nanoid')
 const { MessageDbClient, formatStreamMessage } = require('../../../dist');
 
 /**
  * @param {import("fastify").FastifyInstance & {messageStore: MessageDbClient}} fastify
  */
-module.exports = function(fastify, opts, next) {
+module.exports = function (fastify, opts, next) {
   fastify.get('/register', async (request, reply) => {
     return reply.view('/views/identity/register-user.hbs', {
       userId: uuid(),
@@ -14,14 +15,14 @@ module.exports = function(fastify, opts, next) {
   });
 
   fastify.post('/register', async (request, reply) => {
-    const { email, userId, password } = request.body;
+    const { email, nickname, userId, password } = request.body;
     const { traceId } = request.ctx;
 
-    const emailExists = await fastify.appDb
-      .query('SELECT email from user_credentials WHERE email = $1', [email])
+    const emailOrNicknameExists = await fastify.appDb
+      .query('SELECT email from user_credentials WHERE email = $1 OR nickname = $2', [email, nickname])
       .then(rows => Boolean(rows[0]));
 
-    if (emailExists) {
+    if (emailOrNicknameExists) {
       return reply.code(400).view('/views/identity/register-user-error'.hbs, {
         error: 'Already Taken',
       });
@@ -31,7 +32,7 @@ module.exports = function(fastify, opts, next) {
     const stream = `identity:command-${userId}`;
     const command = formatStreamMessage(
       'Register',
-      { userId, email, passwordHash },
+      { userId, email, nickname, passwordHash },
       { traceId, userId }
     );
 
@@ -71,7 +72,7 @@ module.exports = function(fastify, opts, next) {
     request.session.userId = existingUser.id;
     delete existingUser.passwordHash;
 
-    return reply.view('/views/identity/profile.hbs', existingUser);
+    return reply.view('/views/identity/profile.hbs', { ...existingUser, urlId: nanoid(7) });
   });
 
   fastify.get('/profile', async (request, reply) => {
@@ -80,12 +81,12 @@ module.exports = function(fastify, opts, next) {
     }
 
     const user = await fastify.appDb
-      .query('SELECT id, email from user_credentials WHERE id = $1', [
+      .query('SELECT id, email, nickname FROM user_credentials WHERE id = $1', [
         request.session.userId,
       ])
       .then(rows => camelcase(rows[0]));
 
-    return reply.view('/identify/profile', user);
+    return reply.view('/views/identity/profile.hbs', { ...user, urlId: nanoid(7) });
   });
 
   next();
