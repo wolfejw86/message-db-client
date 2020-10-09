@@ -26,6 +26,7 @@ module.exports = async function (fastify, opts) {
       secure: false,
     }
   });
+  fastify.register(require('fastify-favicon'), { path: './test' })
 
   // Do not touch the following lines
 

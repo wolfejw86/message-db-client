@@ -72,7 +72,22 @@ module.exports = function (fastify, opts, next) {
     request.session.userId = existingUser.id;
     delete existingUser.passwordHash;
 
-    return reply.view('/views/identity/profile.hbs', { ...existingUser, urlId: nanoid(7) });
+    const urls = await fastify.appDb.query(
+      `SELECT url_id, redirect_to_url, stats
+      FROM urls u
+      INNER JOIN url_stats us
+      ON us.url_id = u.id
+      WHERE user_id = $1`,
+      [request.session.userId]
+    ).then(rows => rows.map(row => {
+      return {
+        ...camelcase(row),
+        shareableUrl: (request.headers.origin || 'http://localhost:3000') + '/' + row.url_id
+      }
+    }));
+
+
+    return reply.view('/views/identity/profile.hbs', { ...existingUser, urlId: nanoid(7), urls });
   });
 
   fastify.get('/profile', async (request, reply) => {
@@ -86,7 +101,21 @@ module.exports = function (fastify, opts, next) {
       ])
       .then(rows => camelcase(rows[0]));
 
-    return reply.view('/views/identity/profile.hbs', { ...user, urlId: nanoid(7) });
+    const urls = await fastify.appDb.query(
+      `SELECT url_id, redirect_to_url, stats
+        FROM urls u
+        INNER JOIN url_stats us
+        ON us.url_id = u.id
+        WHERE user_id = $1`,
+      [request.session.userId]
+    ).then(rows => rows.map(row => {
+      return {
+        ...camelcase(row),
+        shareableUrl: (request.headers.origin || 'http://localhost:3000') + '/' + row.url_id
+      }
+    }));
+
+    return reply.view('/views/identity/profile.hbs', { ...user, urlId: nanoid(7), urls });
   });
 
   next();

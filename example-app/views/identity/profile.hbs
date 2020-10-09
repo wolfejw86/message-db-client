@@ -1,34 +1,90 @@
-<div>
-  <h3>
-    Hi {{nickname}}!
-  </h3>
+<style type="text/css">
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
-  <h3>
-    User Information:
-  </h3>
-  <p>
-    Id: {{id}}
-  </p>
-  <p>
-    Email: {{email}}
-  </p>
-  <p>
-    Nickname: {{nickname}}
-  </p>
-</div>
+  .url-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+  }
 
-<div>
-  <h2>Urls</h2>
+  .create,
+    {
+    width: 100%;
+    margin-left: 50px;
+  }
+
+  .link {
+    padding: 10px;
+    margin: 10px;
+
+  }
+</style>
+
+<div class="container">
+  <div class="url-container">
+    <div class="create">
+      <h3>Create New Url</h3>
+      <form action="/url" method="POST">
+        <input type="hidden" name="urlId" value="{{urlId}}">
+        <div>
+          <label for="url">Url</label>
+          <input type="url" name="url" />
+        </div>
+        <button>Create Url</button>
+      </form>
+    </div>
+    <div>
+      <h3>
+        Hi {{nickname}}!
+      </h3>
+
+      <h3>
+        User Information:
+      </h3>
+      <p>
+        Id: {{id}}
+      </p>
+      <p>
+        Email: {{email}}
+      </p>
+      <p>
+        Nickname: {{nickname}}
+      </p>
+    </div>
+  </div>
 
   <div>
-    <h3>Create New Url</h3>
-    <form action="/url" method="POST">
-      <input type="hidden" name="urlId" value="{{urlId}}">
-      <div>
-        <label for="url">Url</label>
-        <input type="url" name="url" />
-      </div>
-      <button>Login</button>
-    </form>
+    <h2>Urls</h2>
+  </div>
+  <div class="url-container">
+
+
+
+    <div class="analytics">
+      <h2>Url Analytics</h2>
+      <table>
+        <thead>
+          <tr>
+            <td>Redirect URL</td>
+            <td>Short URL</td>
+            <td>Visit Count</td>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each urls}}
+          <tr class="link">
+            <td>{{this.redirectToUrl}}</td>
+            <td><a target="_blank" rel="noopener" href="{{this.shareableUrl}}">{{this.shareableUrl}}</a></td>
+            <td>{{this.stats.visitCount}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
